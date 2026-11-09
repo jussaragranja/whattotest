@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "whattotest"
 version = "0.1.0"
-description = "Release impact map for QA: what changed, what it can break, what to test, and what was not impacted."
+description = "What to test first in every release: risk-based test prioritisation from your git history."
 readme = "README.md"
 license = "MIT"
 requires-python = ">=3.11"
@@ -23,3 +23,7 @@ include = ["whattotest*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+
+[project.urls]
+Homepage = "https://github.com/jussaragranja/whattotest"
+Issues = "https://github.com/jussaragranja/whattotest/issues"

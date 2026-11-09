@@ -1,7 +1,10 @@
 # whattotest: Release Impact Map for QA
 
-**Between version A and version B: what changed, what it can break, what to
-test, and what was not changed.**
+**What to test first in every release.**
+
+Risk-based test prioritisation from your git history: between version A and
+version B, what changed, what it can break, what to test first, and what was
+not changed.
 
 Every release, QA gets a list of commits and has to decide what goes into the
 regression. `whattotest` turns the git history into an impact map, explained
@@ -57,7 +60,9 @@ TEST GAPS (changed code with no linked test)
 ## Install
 
 ```bash
-pip install whattotest      # or: pip install git+<this repository>
+pip install whattotest
+# until the first PyPI release, install from GitHub:
+pip install git+https://github.com/jussaragranja/whattotest.git
 ```
 
 Requires Python 3.11+ and git.
