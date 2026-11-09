@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whattotest"
+version = "0.1.0"
+description = "Release impact map for QA: what changed, what it can break, what to test, and what was not impacted."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.11"
+dependencies = []
+keywords = ["testing", "qa", "regression", "release", "risk", "git"]
+
+[project.scripts]
+whattotest = "whattotest.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[tool.setuptools.packages.find]
+include = ["whattotest*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

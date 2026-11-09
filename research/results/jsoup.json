@@ -1,0 +1,758 @@
+{
+  "stats": {
+    "high": [
+      25,
+      24
+    ],
+    "medium": [
+      74,
+      54
+    ],
+    "low": [
+      85,
+      32
+    ],
+    "not impacted": [
+      160,
+      12
+    ]
+  },
+  "fix_hits": {
+    "high": 125,
+    "medium": 159,
+    "low": 57,
+    "not impacted": 20
+  },
+  "releases": [
+    {
+      "release": "jsoup-1.11.3..jsoup-1.12.1",
+      "next": "jsoup-1.12.2",
+      "later_fix_commits": 24,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "high",
+        "Helper": "medium",
+        "Examples": "low",
+        "Internal": "low",
+        "Configuration": "low",
+        "Connection": "low",
+        "Safety": "low",
+        "Select": "low",
+        "Unchecked": "low",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Helper": 5,
+        "Nodes": 9,
+        "Parser": 8,
+        "Select": 7,
+        "Internal": 2,
+        "Safety": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.12.1..jsoup-1.12.2",
+      "next": "jsoup-1.13.1",
+      "later_fix_commits": 4,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "high",
+        "Helper": "medium",
+        "Select": "medium",
+        "Internal": "medium",
+        "Configuration": "low",
+        "Examples": "low",
+        "Connection": "low",
+        "Safety": "low",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 3,
+        "Internal": 1,
+        "Nodes": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.12.2..jsoup-1.13.1",
+      "next": "jsoup-1.14.1",
+      "later_fix_commits": 23,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "medium",
+        "Select": "medium",
+        "Examples": "low",
+        "Internal": "low",
+        "Configuration": "low",
+        "Helper": "low",
+        "Safety": "low",
+        "Connection": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 8,
+        "Nodes": 13,
+        "Helper": 4,
+        "Select": 3,
+        "Internal": 2,
+        "Safety": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.13.1..jsoup-1.14.1",
+      "next": "jsoup-1.14.2",
+      "later_fix_commits": 25,
+      "levels": {
+        "Parser": "high",
+        "Helper": "medium",
+        "Nodes": "medium",
+        "Select": "medium",
+        "Internal": "medium",
+        "Safety": "medium",
+        "Connection": "low",
+        "Jsoup": "low",
+        "Configuration": "low",
+        "Http": "low",
+        "Unsupported": "low",
+        "Examples": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 20,
+        "Nodes": 4,
+        "Internal": 1,
+        "Select": 3
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.14.1..jsoup-1.14.2",
+      "next": "jsoup-1.14.3",
+      "later_fix_commits": 14,
+      "levels": {
+        "Parser": "high",
+        "Nodes": "medium",
+        "Select": "medium",
+        "Helper": "low",
+        "Configuration": "low",
+        "Internal": "low",
+        "Jsoup": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Safety": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 8,
+        "Nodes": 5,
+        "Helper": 2,
+        "Jsoup": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.14.2..jsoup-1.14.3",
+      "next": "jsoup-1.15.1",
+      "later_fix_commits": 15,
+      "levels": {
+        "Parser": "high",
+        "Nodes": "medium",
+        "Select": "medium",
+        "Helper": "medium",
+        "Internal": "low",
+        "Jsoup": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Safety": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Safety": 1,
+        "Nodes": 6,
+        "Helper": 3,
+        "Select": 2,
+        "Jsoup": 1,
+        "Parser": 3,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.14.3..jsoup-1.15.1",
+      "next": "jsoup-1.15.2",
+      "later_fix_commits": 7,
+      "levels": {
+        "Nodes": "medium",
+        "Helper": "medium",
+        "Parser": "medium",
+        "Select": "medium",
+        "Safety": "low",
+        "Internal": "low",
+        "Jsoup": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Helper": 1,
+        "Nodes": 5,
+        "Parser": 2,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.15.1..jsoup-1.15.2",
+      "next": "jsoup-1.15.3",
+      "later_fix_commits": 1,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "medium",
+        "Helper": "low",
+        "Internal": "low",
+        "Jsoup": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.15.2..jsoup-1.15.3",
+      "next": "jsoup-1.15.4",
+      "later_fix_commits": 11,
+      "levels": {
+        "Nodes": "medium",
+        "Helper": "low",
+        "Internal": "low",
+        "Parser": "low",
+        "Safety": "low",
+        "Select": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Nodes": 8,
+        "Helper": 1,
+        "Parser": 4,
+        "Select": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.15.3..jsoup-1.15.4",
+      "next": "jsoup-1.16.1",
+      "later_fix_commits": 13,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "medium",
+        "Helper": "low",
+        "Safety": "low",
+        "Select": "low",
+        "Jsoup": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Internal": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Nodes": 6,
+        "Parser": 4,
+        "Helper": 3
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.15.4..jsoup-1.16.1",
+      "next": "jsoup-1.16.2",
+      "later_fix_commits": 16,
+      "levels": {
+        "Nodes": "medium",
+        "Helper": "medium",
+        "Parser": "medium",
+        "Internal": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Safety": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Connection": 2,
+        "Helper": 3,
+        "Nodes": 4,
+        "Safety": 1,
+        "Parser": 5,
+        "Select": 3,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": [
+        "Select"
+      ]
+    },
+    {
+      "release": "jsoup-1.16.1..jsoup-1.16.2",
+      "next": "jsoup-1.17.1",
+      "later_fix_commits": 8,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "medium",
+        "Select": "medium",
+        "Helper": "medium",
+        "Internal": "medium",
+        "Connection": "low",
+        "Unchecked": "low",
+        "Safety": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Helper": 2,
+        "Safety": 2,
+        "Parser": 2,
+        "Internal": 1,
+        "Select": 4,
+        "Nodes": 1,
+        "Connection": 1,
+        "Jsoup": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.16.2..jsoup-1.17.1",
+      "next": "jsoup-1.17.2",
+      "later_fix_commits": 9,
+      "levels": {
+        "Nodes": "high",
+        "Select": "high",
+        "Parser": "medium",
+        "Connection": "medium",
+        "Helper": "medium",
+        "Internal": "medium",
+        "Java9": "low",
+        "Safety": "low",
+        "Configuration": "low",
+        "Jsoup": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Select": 3,
+        "Nodes": 4,
+        "Parser": 3
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.17.1..jsoup-1.17.2",
+      "next": "jsoup-1.18.1",
+      "later_fix_commits": 13,
+      "levels": {
+        "Nodes": "medium",
+        "Parser": "medium",
+        "Select": "medium",
+        "Examples": "low",
+        "Connection": "not impacted",
+        "Http": "not impacted",
+        "Internal": "not impacted",
+        "Java9": "not impacted",
+        "Jsoup": "not impacted",
+        "Safety": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Nodes": 2,
+        "Select": 4,
+        "Connection": 2,
+        "Progress": 1,
+        "Internal": 2,
+        "Helper": 3,
+        "Parser": 3
+      },
+      "fixes_in_new_areas": [
+        "Helper",
+        "Progress"
+      ]
+    },
+    {
+      "release": "jsoup-1.17.2..jsoup-1.18.1",
+      "next": "jsoup-1.18.2",
+      "later_fix_commits": 13,
+      "levels": {
+        "Helper": "medium",
+        "Internal": "medium",
+        "Parser": "medium",
+        "Connection": "medium",
+        "Nodes": "medium",
+        "Select": "medium",
+        "Jsoup": "low",
+        "Progress": "low",
+        "Unchecked": "low",
+        "Safety": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Java9": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Nodes": 4,
+        "Parser": 8,
+        "Select": 3,
+        "Connection": 1,
+        "Helper": 1,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.18.1..jsoup-1.18.2",
+      "next": "jsoup-1.18.3",
+      "later_fix_commits": 1,
+      "levels": {
+        "Nodes": "high",
+        "Internal": "medium",
+        "Helper": "medium",
+        "Parser": "medium",
+        "Select": "medium",
+        "Connection": "medium",
+        "Configuration": "low",
+        "Safety": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Java9": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Nodes": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.18.2..jsoup-1.18.3",
+      "next": "jsoup-1.19.1",
+      "later_fix_commits": 14,
+      "levels": {
+        "Nodes": "medium",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Helper": "not impacted",
+        "Http": "not impacted",
+        "Internal": "not impacted",
+        "Java9": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Safety": "not impacted",
+        "Select": "not impacted",
+        "Serialization": "not impacted",
+        "Unchecked": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 5,
+        "Nodes": 3,
+        "Select": 4,
+        "Internal": 1,
+        "Jsoup": 1,
+        "Helper": 2
+      },
+      "fixes_in_new_areas": [
+        "Parser"
+      ]
+    },
+    {
+      "release": "jsoup-1.18.3..jsoup-1.19.1",
+      "next": "jsoup-1.20.1",
+      "later_fix_commits": 11,
+      "levels": {
+        "Parser": "high",
+        "Select": "high",
+        "Helper": "medium",
+        "Examples": "medium",
+        "Internal": "medium",
+        "Java11": "medium",
+        "Nodes": "medium",
+        "Java9": "low",
+        "Jsoup": "low",
+        "Safety": "low",
+        "Unchecked": "low",
+        "Connection": "not impacted",
+        "Http": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Select": 4,
+        "Parser": 2,
+        "Helper": 2,
+        "Nodes": 3,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.19.1..jsoup-1.20.1",
+      "next": "jsoup-1.21.1",
+      "later_fix_commits": 10,
+      "levels": {
+        "Parser": "high",
+        "Nodes": "high",
+        "Helper": "medium",
+        "Select": "medium",
+        "Connection": "low",
+        "Internal": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Java11": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Connection": 1,
+        "Helper": 1,
+        "Parser": 7,
+        "Nodes": 1,
+        "Safety": 1
+      },
+      "fixes_in_new_areas": [
+        "Safety"
+      ]
+    },
+    {
+      "release": "jsoup-1.20.1..jsoup-1.21.1",
+      "next": "jsoup-1.21.2",
+      "later_fix_commits": 12,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "high",
+        "Select": "high",
+        "Helper": "medium",
+        "Internal": "medium",
+        "Connection": "low",
+        "Examples": "low",
+        "Java11": "low",
+        "Safety": "low",
+        "Http": "not impacted",
+        "Progress": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 5,
+        "Nodes": 4,
+        "Select": 1,
+        "Internal": 2,
+        "Helper": 1,
+        "Java11": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.21.1..jsoup-1.21.2",
+      "next": "jsoup-1.22.1",
+      "later_fix_commits": 12,
+      "levels": {
+        "Nodes": "high",
+        "Parser": "medium",
+        "Helper": "medium",
+        "Connection": "low",
+        "Internal": "low",
+        "Java11": "low",
+        "Select": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Safety": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 7,
+        "Internal": 1,
+        "Helper": 1,
+        "Nodes": 2,
+        "Select": 2,
+        "Java11": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.21.2..jsoup-1.22.1",
+      "next": "jsoup-1.22.2",
+      "later_fix_commits": 9,
+      "levels": {
+        "Parser": "medium",
+        "Nodes": "medium",
+        "Select": "medium",
+        "Helper": "medium",
+        "Internal": "medium",
+        "Configuration": "low",
+        "Connection": "low",
+        "Java11": "low",
+        "Safety": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 1,
+        "Nodes": 1,
+        "Helper": 2,
+        "Safety": 3,
+        "Internal": 1,
+        "Select": 2
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.22.1..jsoup-1.22.2",
+      "next": "jsoup-1.23.1",
+      "later_fix_commits": 10,
+      "levels": {
+        "Parser": "medium",
+        "Safety": "medium",
+        "Select": "medium",
+        "Helper": "low",
+        "Internal": "low",
+        "Nodes": "low",
+        "Configuration": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Helper": 4,
+        "Parser": 3,
+        "Nodes": 1,
+        "Safety": 1,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.22.2..jsoup-1.23.1",
+      "next": "jsoup-1.23.2",
+      "later_fix_commits": 11,
+      "levels": {
+        "Helper": "high",
+        "Nodes": "medium",
+        "Parser": "medium",
+        "Internal": "medium",
+        "Safety": "low",
+        "Configuration": "low",
+        "Select": "low",
+        "Connection": "not impacted",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Java11": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Helper": 4,
+        "Java11": 2,
+        "Parser": 3,
+        "Nodes": 4,
+        "Select": 1,
+        "Internal": 1
+      },
+      "fixes_in_new_areas": []
+    },
+    {
+      "release": "jsoup-1.23.1..jsoup-1.23.2",
+      "next": "jsoup-1.24.1",
+      "later_fix_commits": 20,
+      "levels": {
+        "Helper": "high",
+        "Parser": "high",
+        "Nodes": "medium",
+        "Internal": "medium",
+        "Java11": "medium",
+        "Safety": "low",
+        "Select": "low",
+        "Connection": "low",
+        "Examples": "not impacted",
+        "Http": "not impacted",
+        "Jsoup": "not impacted",
+        "Progress": "not impacted",
+        "Serialization": "not impacted",
+        "Unsupported": "not impacted"
+      },
+      "later_fix_areas": {
+        "Parser": 14,
+        "Nodes": 5,
+        "Select": 2,
+        "Connection": 1,
+        "Progress": 1,
+        "Internal": 2,
+        "Helper": 1,
+        "Safety": 1
+      },
+      "fixes_in_new_areas": []
+    }
+  ]
+}
