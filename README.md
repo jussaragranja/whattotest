@@ -70,13 +70,77 @@ Requires Python 3.11+ and git.
 ## Usage
 
 ```bash
+whattotest                             # from the previous tag to HEAD
 whattotest v1.4.0..v1.5.0              # between two tags
 whattotest main..release/2.8           # between branches
 whattotest --base main                 # current branch vs main (a PR)
 whattotest v1.4.0 --format md          # markdown for the release issue / wiki
 whattotest v1.4.0 --format json        # for tools and AI agents
+whattotest v1.4.0 --format html --output map.html   # a page to open or share
+whattotest v1.4.0 --output map.html --output map.json  # several formats, one analysis
 whattotest v1.4.0 --history-months 12  # longer history for risk
 whattotest --init                      # create .whattotest.toml
+```
+
+The HTML report is a single self-contained file (no scripts, no external
+assets, light and dark themes): attach it to the release, the test plan or a
+chat message. `--max-chars 65000` shortens the Markdown report to fit a GitHub
+comment.
+
+## GitHub Action
+
+Map every release pull request, with the map as a comment that is updated on
+each push:
+
+```yaml
+name: whattotest
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+  pull-requests: write
+jobs:
+  impact-map:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # risk and tags need the history
+      - uses: jussaragranja/whattotest@v0
+```
+
+Or map each release when it is tagged (previous tag → new tag):
+
+```yaml
+on:
+  push:
+    tags: ["v*"]
+```
+
+The map goes to the job summary and, in pull requests, to a single comment.
+The HTML, Markdown and JSON reports are uploaded as the `whattotest-report`
+artifact; the JSON is the input for the
+[test plan skill](#for-ai-coding-agents).
+
+| Input | Default | |
+|---|---|---|
+| `range` | PR base → HEAD, or previous tag → HEAD | e.g. `v1.4.0..v1.5.0` |
+| `config` | `.whattotest.toml` at the head ref | |
+| `history-months` | 6 | |
+| `comment` | `true` | Comment on the pull request |
+| `artifact` | `true` | Upload the reports |
+| `artifact-name` | `whattotest-report` | |
+
+Outputs: `high`, `medium`, `low` (number of areas per risk level), `html` and
+`json` (report paths). The action is informational and never fails the build;
+use the outputs if you want a gate:
+
+```yaml
+      - id: map
+        uses: jussaragranja/whattotest@v0
+      - if: steps.map.outputs.high != '0'
+        run: echo "::notice::${{ steps.map.outputs.high }} high-risk areas: plan a full regression"
 ```
 
 ## What it analyses

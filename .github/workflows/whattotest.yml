@@ -1,0 +1,16 @@
+name: whattotest
+on: pull_request
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  impact-map:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      # this repository runs the action from its own checkout; elsewhere use jussaragranja/whattotest@v0
+      - uses: ./

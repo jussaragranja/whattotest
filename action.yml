@@ -1,0 +1,132 @@
+name: whattotest release impact map
+description: What to test first in every release. Risk per area with reasons, silent changes, test gaps and stories, from your git history.
+branding:
+  icon: map
+  color: orange
+
+inputs:
+  range:
+    description: >-
+      Range to map, e.g. v1.4.0..v1.5.0. Default: in a pull request, the pull request base
+      branch to HEAD; otherwise, the previous tag to HEAD.
+    required: false
+    default: ""
+  config:
+    description: Path to a configuration file. Default .whattotest.toml at the head ref, if present.
+    required: false
+    default: ""
+  history-months:
+    description: Months of history used for risk. Default 6, or the configuration file.
+    required: false
+    default: ""
+  comment:
+    description: Post (or update) the map as a pull request comment.
+    required: false
+    default: "true"
+  artifact:
+    description: Upload the HTML, Markdown and JSON reports as a workflow artifact.
+    required: false
+    default: "true"
+  artifact-name:
+    description: Name of the uploaded artifact.
+    required: false
+    default: whattotest-report
+
+outputs:
+  high:
+    description: Number of high-risk areas.
+    value: ${{ steps.map.outputs.high }}
+  medium:
+    description: Number of medium-risk areas.
+    value: ${{ steps.map.outputs.medium }}
+  low:
+    description: Number of low-risk areas.
+    value: ${{ steps.map.outputs.low }}
+  html:
+    description: Path of the HTML report.
+    value: ${{ steps.map.outputs.html }}
+  json:
+    description: Path of the JSON report (input for the impact-to-test-plan skill).
+    value: ${{ steps.map.outputs.json }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: "3.12"
+
+    - name: Install
+      shell: bash
+      run: python -m pip install --quiet --disable-pip-version-check "${{ github.action_path }}"
+
+    - name: Map the release
+      id: map
+      shell: bash
+      env:
+        RANGE: ${{ inputs.range }}
+        CONFIG: ${{ inputs.config }}
+        HISTORY: ${{ inputs.history-months }}
+        PR_BASE: ${{ github.base_ref }}
+      run: |
+        if [ "$(git rev-parse --is-shallow-repository)" = "true" ]; then
+          echo "::warning::Shallow clone: risk and tags need history. Use actions/checkout with fetch-depth: 0."
+          git fetch --quiet --unshallow --tags origin || true
+        fi
+        git fetch --quiet --tags origin 2>/dev/null || true
+        ARGS=()
+        if [ -n "$RANGE" ]; then
+          ARGS+=("$RANGE")
+        elif [ -n "$PR_BASE" ]; then
+          git fetch --quiet origin "$PR_BASE" 2>/dev/null || true
+          REF="origin/$PR_BASE"; git rev-parse --verify --quiet "$REF" >/dev/null || REF="$PR_BASE"
+          ARGS+=(--base "$REF" --head HEAD)
+        fi
+        [ -n "$CONFIG" ] && ARGS+=(--config "$CONFIG")
+        [ -n "$HISTORY" ] && ARGS+=(--history-months "$HISTORY")
+
+        OUT="$RUNNER_TEMP/whattotest"; mkdir -p "$OUT"
+        # one analysis, three formats; the Markdown fits a pull request comment
+        whattotest "${ARGS[@]}" --max-chars 65000 \
+          --output "$OUT/whattotest.json" --output "$OUT/whattotest.html" --output "$OUT/whattotest.md"
+
+        cat "$OUT/whattotest.md" >> "$GITHUB_STEP_SUMMARY"
+        python - "$OUT/whattotest.json" >> "$GITHUB_OUTPUT" <<'EOF'
+        import json, sys
+        areas = json.load(open(sys.argv[1], encoding="utf-8"))["areas"]
+        for level in ("high", "medium", "low"):
+            print(f"{level}={sum(a['risk'] == level for a in areas)}")
+        EOF
+        echo "dir=$OUT" >> "$GITHUB_OUTPUT"
+        echo "html=$OUT/whattotest.html" >> "$GITHUB_OUTPUT"
+        echo "json=$OUT/whattotest.json" >> "$GITHUB_OUTPUT"
+
+    - name: Upload report
+      if: inputs.artifact == 'true'
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ inputs.artifact-name }}
+        path: |
+          ${{ steps.map.outputs.dir }}/whattotest.html
+          ${{ steps.map.outputs.dir }}/whattotest.md
+          ${{ steps.map.outputs.dir }}/whattotest.json
+
+    - name: Comment on pull request
+      if: inputs.comment == 'true' && github.event.pull_request.number
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        PR: ${{ github.event.pull_request.number }}
+        BODY: ${{ steps.map.outputs.dir }}/whattotest.md
+      run: |
+        comment() {
+          ID=$(gh api "repos/${{ github.repository }}/issues/$PR/comments" --paginate \
+            --jq '.[] | select(.body | contains("<!-- whattotest -->")) | .id' | tail -n1) || return 1
+          if [ -n "$ID" ]; then
+            gh api -X PATCH "repos/${{ github.repository }}/issues/comments/$ID" -F body=@"$BODY" >/dev/null
+          else
+            gh pr comment "$PR" --repo "${{ github.repository }}" --body-file "$BODY"
+          fi
+        }
+        # pull requests from forks get a read-only token: keep the map in the job summary
+        comment || echo "::warning::Could not comment on the pull request (needs pull-requests: write). The map is in the job summary."
