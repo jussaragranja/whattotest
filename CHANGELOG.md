@@ -14,6 +14,8 @@
   from the extension (`--output map.html --output map.json`).
 - `--max-chars` shortens the Markdown report to a size limit (65000 fits a
   GitHub comment) by dropping the file list first.
+- Python tests that import a module as `from package import module` are now
+  linked to it (before, these modules were reported as test gaps).
 - Fixed "1 files" in risk reasons.
 
 ## 0.1.0

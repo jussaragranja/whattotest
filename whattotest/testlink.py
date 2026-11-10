@@ -39,6 +39,21 @@ def _python_module(path: str) -> str | None:
     return ".".join(parts) if parts else None
 
 
+def _imports_python_module(src: str, module: str) -> bool:
+    """`import pkg.mod`, `from pkg.mod import x` or `from pkg import mod` (also `mod as m`, lists
+    and parenthesised imports)."""
+    if re.search(rf"(?:from\s+{re.escape(module)}\s+import|import\s+{re.escape(module)}\b)", src):
+        return True
+    if "." not in module:
+        return False
+    parent, name = module.rsplit(".", 1)
+    for m in re.finditer(rf"^\s*from\s+{re.escape(parent)}\s+import\s+(\([^)]*\)|[^\n]+)", src, re.MULTILINE):
+        names = m.group(1).split("#")[0].strip("()\n ").replace("\n", " ")
+        if any(item.split()[0] == name for item in names.split(",") if item.strip()):
+            return True
+    return False
+
+
 def _jvm_fqcn(path: str) -> tuple[str, str] | None:
     m = re.search(r"src/\w+/(?:java|kotlin)/(.+)\.(?:java|kt)$", path)
     if not m:
@@ -68,7 +83,7 @@ class LinkIndex:
         for path, src in self.tests.items():
             if path in out:
                 continue
-            if module and re.search(rf"(?:from\s+{re.escape(module)}\s+import|import\s+{re.escape(module)}\b)", src):
+            if module and _imports_python_module(src, module):
                 out.add(path)
             elif jvm:
                 package, cls = jvm
