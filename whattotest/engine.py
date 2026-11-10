@@ -84,12 +84,13 @@ def score(area: AreaImpact) -> None:
     points, reasons = 0, []
     n, lines = len(area.code_files), area.lines
 
+    files = f"{n} file{'s' if n != 1 else ''}"
     if lines > 300 or n > 10:
         points += 2
-        reasons.append(f"large change ({n} files, {lines} lines)")
+        reasons.append(f"large change ({files}, {lines} lines)")
     elif lines > 60 or n > 3:
         points += 1
-        reasons.append(f"{n} files, {lines} lines changed")
+        reasons.append(f"{files}, {lines} lines changed")
 
     if area.fix_commits >= 5:
         points += 2
@@ -121,7 +122,7 @@ def score(area: AreaImpact) -> None:
     area.score = points
     area.level = "high" if points >= 5 else "medium" if points >= 2 else "low"
     if not reasons:
-        reasons.append(f"small change ({n} file{'s' if n != 1 else ''}, {lines} lines)")
+        reasons.append(f"small change ({files}, {lines} lines)")
     area.reasons = reasons
 
 

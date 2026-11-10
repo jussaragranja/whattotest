@@ -163,3 +163,16 @@ def test_test_links():
     assert index.linked("shop/pricing.py") == {"tests/test_checkout.py"}
     assert index.linked("web/src/Cart.tsx") == {"web/src/Cart.test.tsx", "web/src/flows/checkout.spec.ts"}
     assert index.linked("shop/unrelated.py") == set()
+
+
+def test_python_link_from_package_import_module():
+    tests = {
+        "tests/test_a.py": "from shop import cli\n",
+        "tests/test_b.py": "from shop import (\n    config,\n    pricing as p,  # comment\n)\n",
+        "tests/test_c.py": "from shop import clinic, report_cli\nfrom shop.cli_tools import x\n",
+        "tests/test_d.py": "import shop.cli\n",
+    }
+    index = LinkIndex(tests)
+    assert index.linked("shop/cli.py") == {"tests/test_a.py", "tests/test_d.py"}
+    assert index.linked("src/shop/pricing.py") == {"tests/test_b.py"}
+    assert index.linked("shop/config.py") == {"tests/test_b.py"}

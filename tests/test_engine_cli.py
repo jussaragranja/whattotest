@@ -116,3 +116,63 @@ def test_init(repo, capsys):
     assert run(repo, capsys, "--init")[0] == 0
     assert (repo.path / ".whattotest.toml").exists()
     assert run(repo, capsys, "--init")[0] == 2
+
+
+def test_no_range_uses_previous_tag(release, capsys):
+    release.commit({SEARCH: java("SearchService", "int q() { return 2; }")}, "search tweak")
+    code, out = run(release, capsys, "--format", "json")
+    data = json.loads(out)
+    assert code == 0 and data["base"] == "v1.1" and data["commits"] == 1
+    # HEAD itself tagged: compare with the tag before it
+    release.tag("v1.2")
+    _, out = run(release, capsys, "--format", "json")
+    assert json.loads(out)["base"] == "v1.1"
+    _, out = run(release, capsys, "--head", "v1.1", "--format", "json")
+    assert json.loads(out)["base"] == "v1.0"
+
+
+def test_html_report(release, capsys, tmp_path):
+    release.commit({CHECKOUT: java("CheckoutService", "int t() { return 2; }")},
+                   'SHOP-200 <script>alert("x")</script> & "quotes"')
+    target = tmp_path / "map.html"
+    code, _ = run(release, capsys, "v1.0..HEAD", "--format", "html", "--output", str(target))
+    page = target.read_text(encoding="utf-8")
+    assert code == 0 and page.startswith("<!doctype html>")
+    for section in ("Suggested regression scope", "Areas", "Silent changes", "Stories in this release",
+                    "Test gaps", "Payment", "Login, Search"):
+        assert section in page
+    # story titles come from commit messages: always escaped
+    assert "<script>" not in page and "&lt;script&gt;" in page
+    # self-contained: no scripts or external assets
+    assert "http://" not in page and "https://" not in page and "<script" not in page
+
+
+def test_markdown_max_chars(release, capsys):
+    _, full = run(release, capsys, "v1.0..v1.1", "--format", "md")
+    full = full.rstrip("\n")   # print() adds a newline
+    assert "Changed files by area" in full
+    _, short = run(release, capsys, "v1.0..v1.1", "--format", "md", "--max-chars", str(len(full) - 1))
+    assert len(short.rstrip("\n")) <= len(full) - 1 and "Changed files by area" not in short
+    assert "Shortened to fit" in short and "### Suggested regression scope" in short
+    _, tiny = run(release, capsys, "v1.0..v1.1", "--format", "md", "--max-chars", "300")
+    assert len(tiny.rstrip("\n")) <= 300 and tiny.rstrip().endswith("full map._")
+    assert run(release, capsys, "v1.0..v1.1", "--format", "json", "--max-chars", "10")[0] == 2
+
+
+def test_several_outputs_from_one_analysis(release, capsys, tmp_path):
+    files = [tmp_path / n for n in ("map.json", "map.html", "map.md", "map.txt")]
+    code, out = run(release, capsys, "v1.0..v1.1", "--max-chars", "1500",
+                    *[a for f in files for a in ("--output", str(f))])
+    assert code == 0 and out == ""
+    assert json.loads(files[0].read_text())["head"] == "v1.1"
+    assert files[1].read_text().startswith("<!doctype html>")
+    md = files[2].read_text()
+    assert md.startswith("<!-- whattotest -->") and len(md.rstrip("\n")) <= 1500
+    assert files[3].read_text().startswith("RELEASE IMPACT MAP")
+    # a single --output keeps --format, whatever the extension
+    code, _ = run(release, capsys, "v1.0..v1.1", "--format", "md", "--output", str(files[3]))
+    assert files[3].read_text().startswith("<!-- whattotest -->")
+    assert run(release, capsys, "v1.0..v1.1", "--output", str(tmp_path / "a.pdf"),
+               "--output", str(tmp_path / "b.json"))[0] == 2
+    code, _ = run(release, capsys, "v1.0..v1.1", "--output", str(tmp_path / "map.log"))
+    assert code == 0 and (tmp_path / "map.log").read_text().startswith("RELEASE IMPACT MAP")

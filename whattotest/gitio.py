@@ -23,6 +23,12 @@ def resolve(repo: Path, ref: str) -> str:
     return git(repo, "rev-parse", "--verify", f"{ref}^{{commit}}").strip()
 
 
+def previous_tag(repo: Path, ref: str) -> str | None:
+    """The nearest tag before `ref` (if `ref` itself is tagged, the one before it)."""
+    out = git(repo, "describe", "--tags", "--abbrev=0", f"{ref}^", check=False).strip()
+    return out or None
+
+
 def merge_base(repo: Path, a: str, b: str) -> str:
     out = git(repo, "merge-base", a, b, check=False).strip()
     return out or resolve(repo, a)

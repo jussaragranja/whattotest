@@ -1,11 +1,12 @@
-"""Reports: text (terminal), md (release issue / PR / wiki), json (tools and agents)."""
+"""Reports: text (terminal), md (release issue / PR / wiki), json (tools and agents),
+html (a self-contained page to open or share)."""
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 from whattotest import __version__
 from whattotest.engine import SCOPE, Result
+from whattotest.htmlreport import to_html
 
 ICON = {"high": "🔴", "medium": "🟡", "low": "🟢"}
 SIGNAL_LABEL = {"migration": "Migration", "dependency": "Dependency", "env": "Env var", "flag": "Feature flag"}
@@ -90,7 +91,22 @@ def to_text(r: Result) -> str:
 
 # ---------------------------------------------------------------- markdown
 
-def to_markdown(r: Result) -> str:
+SHORTENED = "_Shortened to fit the size limit. The HTML or JSON report has the full map._"
+
+
+def to_markdown(r: Result, max_chars: int | None = None) -> str:
+    """Markdown report. With max_chars, drop detail until it fits (GitHub comments: 65536)."""
+    for level in range(3):
+        text = _markdown(r, level)
+        if max_chars is None or len(text) <= max_chars:
+            return text
+    cut = text[:max(0, max_chars - len(SHORTENED) - 2)]
+    return cut[:cut.rfind("\n") + 1 if "\n" in cut else len(cut)] + "\n" + SHORTENED
+
+
+def _markdown(r: Result, compact: int = 0) -> str:
+    """compact 0: everything; 1: no changed-file list; 2: also cap test gaps and stories."""
+    gap_cap, story_cap = (None, None) if compact < 2 else (20, 30)
     out = ["<!-- whattotest -->", f"## Release impact map: `{r.base}` → `{r.head}`", "",
            f"{r.commits} commits · {len(r.stories)} stories · {_counts(r)}"]
     sc = _signal_counts(r)
@@ -121,25 +137,33 @@ def to_markdown(r: Result) -> str:
 
     if r.stories:
         out += ["", "### Stories in this release", "", "| Story | Title | Areas | Commits |", "|---|---|---|---|"]
-        for st in r.stories:
+        for st in r.stories[:story_cap]:
             out.append(f"| {st.key} | {st.title[:70]} | {', '.join(sorted(st.areas)) or '—'} | {st.commits} |")
+        if story_cap and len(r.stories) > story_cap:
+            out.append(f"| … | {len(r.stories) - story_cap} more | | |")
 
     gaps = [(a.name, u) for a in r.areas for u in a.untested]
     if gaps:
         out += ["", "<details><summary>Test gaps: changed code with no linked test "
                 f"({len(gaps)})</summary>", ""]
-        out += [f"- **{area}** `{path}`" for area, path in gaps]
+        out += [f"- **{area}** `{path}`" for area, path in gaps[:gap_cap]]
+        if gap_cap and len(gaps) > gap_cap:
+            out.append(f"- … and {len(gaps) - gap_cap} more")
         out += ["", "</details>"]
 
-    out += ["", "<details><summary>Changed files by area</summary>", ""]
-    for a in r.areas + r.test_only:
-        out.append(f"**{a.name}**")
-        out += [f"- `{f.status}` {f.path} (+{f.added} −{f.removed})" for f in a.files]
-        out.append("")
-    if r.other_files:
-        out.append("**Other**")
-        out += [f"- `{f.status}` {f.path}" for f in r.other_files]
-    out += ["</details>", "",
+    if compact == 0:
+        out += ["", "<details><summary>Changed files by area</summary>", ""]
+        for a in r.areas + r.test_only:
+            out.append(f"**{a.name}**")
+            out += [f"- `{f.status}` {f.path} (+{f.added} −{f.removed})" for f in a.files]
+            out.append("")
+        if r.other_files:
+            out.append("**Other**")
+            out += [f"- `{f.status}` {f.path}" for f in r.other_files]
+        out.append("</details>")
+    else:
+        out += ["", SHORTENED]
+    out += ["",
             f"<sub>base `{_short(r.base_sha)}` · head `{_short(r.head_sha)}` · history {r.history_months} months · whattotest {__version__}</sub>"]
     return "\n".join(out)
 
@@ -172,4 +196,4 @@ def to_json(r: Result) -> str:
     }, indent=2, ensure_ascii=False)
 
 
-FORMATS = {"text": to_text, "md": to_markdown, "json": to_json}
+FORMATS = {"text": to_text, "md": to_markdown, "json": to_json, "html": to_html}
