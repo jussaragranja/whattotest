@@ -1,5 +1,7 @@
 # whattotest: Release Impact Map for QA
 
+[![PyPI](https://img.shields.io/pypi/v/whattotest.svg)](https://pypi.org/project/whattotest/)
+
 **What to test first in every release.**
 
 Risk-based test prioritisation from your git history: between version A and
@@ -61,8 +63,6 @@ TEST GAPS (changed code with no linked test)
 
 ```bash
 pip install whattotest
-# until the first PyPI release, install from GitHub:
-pip install git+https://github.com/jussaragranja/whattotest.git
 ```
 
 Requires Python 3.11+ and git.
